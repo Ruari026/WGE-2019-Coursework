@@ -15,7 +15,7 @@ public class DialogueEditorWindow : EditorWindow
     //Resizing window panels
     Rect windowResizer;
     private bool isResizing;
-    private float panelRatio = 0.5f;
+    private float panelRatio = 0.25f;
     private GUIStyle resizerStyle;
 
     //Dialogue System Panel
