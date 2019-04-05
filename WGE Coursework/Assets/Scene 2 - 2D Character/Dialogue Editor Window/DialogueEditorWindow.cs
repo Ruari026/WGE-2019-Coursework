@@ -15,7 +15,7 @@ public class DialogueEditorWindow : EditorWindow
     //Resizing window panels
     Rect windowResizer;
     private bool isResizing;
-    private float panelRatio = 0.25f;
+    private float panelRatio = 0.3f;
     private GUIStyle resizerStyle;
 
     //Dialogue System Panel
@@ -36,15 +36,15 @@ public class DialogueEditorWindow : EditorWindow
 
     private void OnGUI()
     {
-        //Drawing the panel split line
-        Rect resizer = new Rect(0, (position.height * panelRatio) - 5f, position.width, 10f);
-        GUILayout.BeginArea(new Rect(resizer.position + (Vector2.up * 5f), new Vector2(position.width, 2)), resizerStyle);
-        GUILayout.EndArea();
+        //Handling Saving & Loading Panel
+        DrawSaveLoadPanel();
 
-        EditorGUIUtility.AddCursorRect(resizer, MouseCursor.ResizeVertical);
+        //Handling Resizer Panel
+        DrawResizingHandle();
+        HandleResizingInputs();
 
         //Drawing The Lower Panel
-        
+        DrawDialogueEditorPanel();
     }
 
 
@@ -56,7 +56,7 @@ public class DialogueEditorWindow : EditorWindow
     private void DrawSaveLoadPanel()
     {
         //Setting Panel Size
-        saveLoadPanel = new Rect(0, 0, position.width, position.height * 0.5f * panelRatio);
+        saveLoadPanel = new Rect(0, 0, position.width * panelRatio, position.height);
 
         //Drawing Panel Contents
         GUILayout.BeginArea(saveLoadPanel);
@@ -83,14 +83,23 @@ public class DialogueEditorWindow : EditorWindow
     /*/
     private void DrawResizingHandle()
     {
-        //Setting handle Size
+        //Setting the panel split line size
+        windowResizer = new Rect((position.width * panelRatio), 0, 3, position.height);
 
-        //Drawing handle Contents
+        //Drawing the panel split line
+        GUILayout.BeginArea(windowResizer, resizerStyle);
+        GUILayout.EndArea();
     }
 
-    private void ResizingHandleInputs()
+    private void HandleResizingInputs()
     {
+        //Setting input area size
+        Rect inputArea = windowResizer;
+        inputArea.x = inputArea.x - 3;
+        inputArea.width = 9;
 
+        //Setting the cursor when hovered over area
+        EditorGUIUtility.AddCursorRect(inputArea, MouseCursor.ResizeHorizontal);
     }
 
 
@@ -99,18 +108,46 @@ public class DialogueEditorWindow : EditorWindow
     Handling the dialogue system panel
     ====================================================================================================
     */
-    private void DrawDialoguePanel()
+    private void DrawDialogueEditorPanel()
     {
         //Setting Panel Size
-        dialoguePanel = new Rect(0, position.height * 0.5f, position.width, position.height * 0.5f * (1 - panelRatio));
-        
+        dialoguePanel = new Rect(position.width * panelRatio, 0, position.width * (1 - panelRatio), position.height);
+
         //Drawing Panel Contents
         GUILayout.BeginArea(dialoguePanel);
 
-        GUILayout.Label("Dialogue System Panel");
+        //Drawing The Grid Background
+        DrawGrid(20, 0.2f, Color.gray);
+        DrawGrid(100, 0.4f, Color.gray);
+
+        GUILayout.Label("Dialogue System Panel", EditorStyles.boldLabel);
 
         GUILayout.EndArea();
     }
 
+    private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
+    {
+        int widthDivs = Mathf.CeilToInt(position.width / gridSpacing);
+        int heightDivs = Mathf.CeilToInt(position.height / gridSpacing);
 
+        Handles.BeginGUI();
+        Handles.color = new Color(gridColor.r, gridColor.g, gridColor.b, gridOpacity);
+
+        Vector3 drag = Vector3.zero;
+        Vector3 offset = drag * 0.5f;
+        Vector3 newOffset = new Vector3(offset.x % gridSpacing, offset.y % gridSpacing, 0);
+
+        for (int i = 0; i < widthDivs; i++)
+        {
+            Handles.DrawLine(new Vector3(gridSpacing * i, -gridSpacing, 0) + newOffset, new Vector3(gridSpacing * i, position.height, 0f) + newOffset);
+        }
+
+        for (int j = 0; j < heightDivs; j++)
+        {
+            Handles.DrawLine(new Vector3(-gridSpacing, gridSpacing * j, 0) + newOffset, new Vector3(position.width, gridSpacing * j, 0f) + newOffset);
+        }
+
+        Handles.color = Color.white;
+        Handles.EndGUI();
+    }
 }

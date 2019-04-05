@@ -27,6 +27,7 @@ public class NodeBasedEditor : EditorWindow
 
     private void OnEnable()
     {
+        //Setting Up Visuals For Each Editor Window Element
         nodeStyle = new GUIStyle();
         nodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1.png") as Texture2D;
         nodeStyle.border = new RectOffset(12, 12, 12, 12);
@@ -34,8 +35,7 @@ public class NodeBasedEditor : EditorWindow
         selectedNodeStyle = new GUIStyle();
         selectedNodeStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/node1 on.png") as Texture2D;
         selectedNodeStyle.border = new RectOffset(12, 12, 12, 12);
-
-
+        
         inPointStyle = new GUIStyle();
         inPointStyle.normal.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left.png") as Texture2D;
         inPointStyle.active.background = EditorGUIUtility.Load("builtin skins/darkskin/images/btn left on.png") as Texture2D;
@@ -50,18 +50,23 @@ public class NodeBasedEditor : EditorWindow
 
     private void OnGUI()
     {
+        //Drawing The Grid Background
         DrawGrid(20, 0.2f, Color.gray);
         DrawGrid(100, 0.4f, Color.gray);
 
+        //Drawing Window Elements
         DrawNodes();
         DrawConnections();
-
         DrawConnectionLine(Event.current);
 
+        //Handling Window Element Events
         ProcessNodeEvents(Event.current);
         ProcessEvents(Event.current);
 
-        if (GUI.changed) Repaint();
+        if (GUI.changed)
+        {
+            Repaint();
+        }
     }
 
     private void DrawGrid(float gridSpacing, float gridOpacity, Color gridColor)
