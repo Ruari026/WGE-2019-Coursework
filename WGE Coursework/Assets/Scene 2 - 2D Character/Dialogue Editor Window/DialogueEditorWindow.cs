@@ -62,6 +62,7 @@ public class DialogueEditorWindow : EditorWindow
         GUILayout.BeginArea(saveLoadPanel);
 
         GUILayout.Label("Saving & Loading File", EditorStyles.boldLabel);
+
         if (GUILayout.Button("Load Dialogue File"))
         {
             string fileName = EditorUtility.OpenFilePanel("Open Dialogue File (.xml)", "", "xml");
