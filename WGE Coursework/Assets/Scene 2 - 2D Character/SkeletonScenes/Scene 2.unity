@@ -499,7 +499,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 8
+  orthographic size: 7
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1820,8 +1820,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5232b2617a895c1468fbdc18b65fc621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followTarget: {fileID: 672720824}
-  followSpeedX: 3
+  playerCharacter: {fileID: 672720824}
+  followSpeedX: 5
   xRange: 1
   followSpeedY: 3
 --- !u!4 &1938392004

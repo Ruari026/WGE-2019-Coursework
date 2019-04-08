@@ -5,7 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [Header("Target Object To Follow")]
-    public GameObject followTarget;
+    public GameObject playerCharacter;
 
     [Header("Following On The X Axis")]
     public float followSpeedX;
@@ -23,7 +23,7 @@ public class CameraController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        FollowTarget();
+        FollowPlayerCharacter();
 	}
 
 
@@ -32,12 +32,19 @@ public class CameraController : MonoBehaviour
     Regular Camera Movement
     ========================================================================================================================================================================================================
     */
-    private void FollowTarget()
+    private void FollowPlayerCharacter()
     {
         Vector3 newPosition = this.transform.position;
 
+        //Getting Player Information
+        if (playerCharacter.GetComponent<PlayerMovement2D>()._mState == MovementState.ON_GROUND)
+        {
+            //Following the Target On The Y Axis
+            newPosition.y = playerCharacter.transform.position.y;
+        }
+        
         //Following the Target On The X Axis
-        float xDifference = this.transform.position.x - followTarget.transform.position.x;
+        float xDifference = this.transform.position.x - playerCharacter.transform.position.x;
         if (xDifference < 0)
         {
             xDifference *= -1;
@@ -45,55 +52,13 @@ public class CameraController : MonoBehaviour
 
         if (xDifference > xRange)
         {
-            newPosition.x = followTarget.transform.position.x;
+            newPosition.x = playerCharacter.transform.position.x;
         }
 
-        //Following the Target On The Y Axis
-        newPosition.y = followTarget.transform.position.y;
+        
 
         //Lerping The Camera To The Target
         this.transform.position = Vector3.Lerp(this.transform.position, newPosition, followSpeedY * Time.deltaTime);
-    }
-
-
-    /*
-    ========================================================================================================================================================================================================
-    Manually Moving Camera
-    ========================================================================================================================================================================================================
-    */
-    private void LerpCameraToPosition(Vector3 newPosition)
-    {
-        StartCoroutine(LerpPosition(this.transform.position, newPosition, 1));
-    }
-
-    IEnumerator LerpPosition(Vector3 currentPosition, Vector3 newPosition, float maxTime)
-    {
-        float t = 0;
-
-        while (t < 1)
-        {
-            t += (Time.deltaTime / maxTime);
-
-            this.transform.position = Vector3.Lerp(currentPosition, newPosition, t);
-
-            if (t >= 1)
-            {
-                this.transform.position = newPosition;
-            }
-
-            yield return null;
-        }
-    }
-
-
-    /*
-    ========================================================================================================================================================================================================
-    Controlling The Camera Target
-    ========================================================================================================================================================================================================
-    */
-    private void SetNewFollowTarget(GameObject newTarget)
-    {
-        this.followTarget = newTarget;
     }
 
 
