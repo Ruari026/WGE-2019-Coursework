@@ -4,8 +4,8 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerController2D))]
 
-public class PlayerMovement2D : MonoBehaviour {
-
+public class PlayerMovement2D : MonoBehaviour
+{
     //member variables
     PlayerController2D _pController;
     Rigidbody2D _rBody;
@@ -26,8 +26,15 @@ public class PlayerMovement2D : MonoBehaviour {
     public float _dashTime = 0.5f;
     Coroutine _dashReloadHandle = null;
 
+
+    //Personal Addition
+    public delegate void PlayerHitGround();
+    public event PlayerHitGround _playerHitGround;
+
+
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
         _pController = GetComponent<PlayerController2D>();
 
         _pController._jumpInput += Jump;
@@ -52,7 +59,8 @@ public class PlayerMovement2D : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update ()
+    {
         if (_mState == MovementState.DISABLED)
             return;
 
@@ -60,7 +68,13 @@ public class PlayerMovement2D : MonoBehaviour {
         {
             if (Physics2D.OverlapBoxAll(new Vector2(_feet.position.x, _feet.position.y), new Vector2(0.25f, 0.25f), 0f).Length > 1 && _mState != MovementState.DASHING)
             {
-                SwitchState(MovementState.ON_GROUND);
+                ///Personal Edit
+                if (_mState != MovementState.ON_GROUND)
+                {
+                    SwitchState(MovementState.ON_GROUND);
+
+                    //_playerHitGround();
+                }
             }
             else
             {

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController2D : MonoBehaviour {
-
+public class PlayerController2D : MonoBehaviour
+{
     public delegate void JumpInput();
     public delegate void JumpReleaseInput();
     public delegate void JumpPressedInput();
@@ -16,13 +16,16 @@ public class PlayerController2D : MonoBehaviour {
     public event JumpPressedInput _jumpPressedInput;
     public event DashPressedInput _dashPressedInput;
 
+
     // Use this for initialization
-    void Start () {
+    void Start ()
+    {
 		
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void Update ()
+    {
         float hMove = Input.GetAxis("Horizontal");
         float vMove = Input.GetAxis("Vertical");
 

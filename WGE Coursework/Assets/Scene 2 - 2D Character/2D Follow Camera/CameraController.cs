@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [Header("Target Object To Follow")]
+    [Header("Camera Target Objects")]
     public GameObject playerCharacter;
+    public GameObject otherTargetCharacter;
 
     [Header("Following On The X Axis")]
     public float followSpeedX;
@@ -13,6 +14,10 @@ public class CameraController : MonoBehaviour
 
     [Header("Following Target On The y Axis")]
     public float followSpeedY;
+    private float cameraYPos;
+
+    [Header("Player Respawn Position")]
+    public Transform playerRespawnPosition;
 
 	// Use this for initialization
 	void Start ()
@@ -26,6 +31,16 @@ public class CameraController : MonoBehaviour
         FollowPlayerCharacter();
 	}
 
+    void OnEnable()
+    {
+        ResetPlayerPosition._playerRespawn += RespawnCamera;
+    }
+
+    void OnDisable()
+    {
+        ResetPlayerPosition._playerRespawn -= RespawnCamera;
+    }
+
 
     /*
     ========================================================================================================================================================================================================
@@ -34,31 +49,53 @@ public class CameraController : MonoBehaviour
     */
     private void FollowPlayerCharacter()
     {
-        Vector3 newPosition = this.transform.position;
-
-        //Getting Player Information
-        if (playerCharacter.GetComponent<PlayerMovement2D>()._mState == MovementState.ON_GROUND)
+        if (GetPlayerState() != MovementState.DISABLED)
         {
+            Vector3 newPosition = this.transform.position;
+
+            //Getting Player Information
+            if (GetPlayerState() == MovementState.ON_GROUND)
+            {
+                cameraYPos = playerCharacter.transform.position.y;
+            }
             //Following the Target On The Y Axis
-            newPosition.y = playerCharacter.transform.position.y;
-        }
-        
-        //Following the Target On The X Axis
-        float xDifference = this.transform.position.x - playerCharacter.transform.position.x;
-        if (xDifference < 0)
-        {
-            xDifference *= -1;
-        }
+            newPosition.y = cameraYPos;
 
-        if (xDifference > xRange)
-        {
-            newPosition.x = playerCharacter.transform.position.x;
+            //Following the Target On The X Axis
+            float xDifference = this.transform.position.x - playerCharacter.transform.position.x;
+            if (xDifference < 0)
+            {
+                xDifference *= -1;
+            }
+
+            if (xDifference > xRange)
+            {
+                newPosition.x = playerCharacter.transform.position.x;
+            }
+
+            //Lerping The Camera To The Target
+            this.transform.position = Vector3.Lerp(this.transform.position, newPosition, followSpeedY * Time.deltaTime);
         }
+    }
+    /*
+    ========================================================================================================================================================================================================
+    Getting Player Information
+    ========================================================================================================================================================================================================
+    */
+    public void RespawnCamera()
+    {
+        this.transform.position = playerRespawnPosition.position;
+    }
 
-        
 
-        //Lerping The Camera To The Target
-        this.transform.position = Vector3.Lerp(this.transform.position, newPosition, followSpeedY * Time.deltaTime);
+    /*
+    ========================================================================================================================================================================================================
+    Getting Player Information
+    ========================================================================================================================================================================================================
+    */
+    private MovementState GetPlayerState()
+    {
+        return playerCharacter.GetComponent<PlayerMovement2D>()._mState;
     }
 
 

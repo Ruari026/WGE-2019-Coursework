@@ -7,6 +7,12 @@ public class ResetPlayerPosition : MonoBehaviour
     //Position For The Player To Reset To
     public Transform resetTransform;
 
+    
+    //Personal Addition
+    public delegate void PlayerRespawn();
+    public static event PlayerRespawn _playerRespawn;
+
+
     // Use this for initialization
     void Start ()
     {
@@ -24,6 +30,8 @@ public class ResetPlayerPosition : MonoBehaviour
         if(col.gameObject.tag == "Player")
         {
             col.gameObject.transform.position = resetTransform.position;
+
+            _playerRespawn();
         }
     }
 }

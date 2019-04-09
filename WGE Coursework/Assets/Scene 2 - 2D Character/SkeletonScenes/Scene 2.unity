@@ -1821,9 +1821,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCharacter: {fileID: 672720824}
+  otherTargetCharacter: {fileID: 0}
   followSpeedX: 5
   xRange: 1
   followSpeedY: 3
+  playerRespawnPosition: {fileID: 1504267021}
 --- !u!4 &1938392004
 Transform:
   m_ObjectHideFlags: 0
