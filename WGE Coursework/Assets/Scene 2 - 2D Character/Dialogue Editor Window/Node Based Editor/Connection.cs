@@ -6,6 +6,7 @@ public class Connection
 {
     public ConnectionPoint inPoint;
     public ConnectionPoint outPoint;
+
     public Action<Connection> OnClickRemoveConnection;
 
     public Connection(ConnectionPoint inPoint, ConnectionPoint outPoint, Action<Connection> OnClickRemoveConnection)

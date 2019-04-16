@@ -46,7 +46,7 @@ public class ConnectionPoint
         DrawConnectionPoint(renderPos);
     }
 
-    public void DrawConnectionPoint(Rect pos)
+    public void DrawConnectionPoint()
     {
         rect.y = node.rect.y + (node.rect.height * 0.5f) - rect.height * 0.5f;
 
@@ -60,6 +60,18 @@ public class ConnectionPoint
                 rect.x = node.rect.x + node.rect.width - 8f;
                 break;
         }
+
+        if (GUI.Button(rect, "", style))
+        {
+            if (OnClickConnectionPoint != null)
+            {
+                OnClickConnectionPoint(this);
+            }
+        }
+    }
+    public void DrawConnectionPoint(Rect pos)
+    {
+        rect = pos;
 
         if (GUI.Button(pos, "", style))
         {

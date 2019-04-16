@@ -14,6 +14,7 @@ public class Node
 
     public ConnectionPoint inPoint;
     public List<ConnectionPoint> outPoints = new List<ConnectionPoint>();
+    private Action<ConnectionPoint> OnClickOut;
 
     public GUIStyle style;
     public GUIStyle defaultNodeStyle;
@@ -21,10 +22,10 @@ public class Node
 
     public Action<Node> OnRemoveNode;
 
-    //Dialogue System Information
+    //Dialogue Information
     private string npcText = "";
-    private int playerResponcesAmount = 1;
-    private List<string> playerResponcesText = new List<string>();
+    private int playerResponsesAmount = 1;
+    private List<string> playerResponsesText = new List<string>();
 
     /*
     ====================================================================================================
@@ -76,7 +77,7 @@ public class Node
                     rect = new Rect(position.x, position.y, 225, 125);
                     inPoint = new ConnectionPoint(this, ConnectionPointType.IN, OnClickInPoint);
                     outPoints.Add(new ConnectionPoint(this, ConnectionPointType.OUT, OnClickOutPoint));
-                    playerResponcesText.Add("");
+                    playerResponsesText.Add("");
 
                     //Setting Node Styles
                     defaultNodeStyle = new GUIStyle();
@@ -93,6 +94,7 @@ public class Node
 
         //Setting Node Actions
         OnRemoveNode = OnClickRemoveNode;
+        OnClickOut = OnClickOutPoint;
     }
 
 
@@ -109,30 +111,20 @@ public class Node
 
     public void DrawNode()
     {
-        //Drawing Connection Points
-        if (inPoint != null)
-        {
-            Rect renderPosition = new Rect(rect.x - 2, rect.y + 20, 10, 20);
-
-            inPoint.HandleConnectionPoint(renderPosition);
-        }
-
-        if (outPoints.Count > 0)
-        {
-            for (int i = 0; i < outPoints.Count; i++)
-            {
-                Rect renderPosition = new Rect(rect.x + rect.width - 8, rect.y + 60 + (40 * i), 10, 20);
-
-                outPoints[i].HandleConnectionPoint(renderPosition);
-            }
-        }
-
         //Drawing Dialogue Options Box
         GUI.Box(rect, "", style);
         switch (nodeType)
         {
             case (NodeType.START):
                 {
+                    if (outPoints.Count > 0)
+                    {
+                        for (int i = 0; i < outPoints.Count; i++)
+                        {
+                            outPoints[i].DrawConnectionPoint();
+                        }
+                    }
+
                     GUIStyle textStyle = new GUIStyle();
                     textStyle.fontStyle = FontStyle.Bold;
                     textStyle.alignment = TextAnchor.MiddleCenter;
@@ -145,6 +137,12 @@ public class Node
 
             case (NodeType.END):
                 {
+                    //Drawing Connection Points
+                    if (inPoint != null)
+                    {
+                        inPoint.DrawConnectionPoint();
+                    }
+
                     GUIStyle textStyle = new GUIStyle();
                     textStyle.fontStyle = FontStyle.Bold;
                     textStyle.alignment = TextAnchor.MiddleCenter;
@@ -157,6 +155,22 @@ public class Node
 
             default:
                 {
+                    //Drawing Connection Points
+                    if (inPoint != null)
+                    {
+                        Rect renderPosition = new Rect(rect.x - 2, rect.y + 26, 10, 20);
+                        inPoint.HandleConnectionPoint(renderPosition);
+                    }
+
+                    if (outPoints.Count > 0)
+                    {
+                        for (int i = 0; i < outPoints.Count; i++)
+                        {
+                            Rect renderPosition = new Rect(rect.x + rect.width - 8, rect.y + 91 + (40 * i), 10, 20);
+                            outPoints[i].HandleConnectionPoint(renderPosition);
+                        }
+                    }
+
                     //Handling NPC Dialogue Editing
                     Rect npcTitleRect = new Rect(rect.x + 10, rect.y + 10, rect.width - 20, 20);
                     GUI.Label(npcTitleRect, "NPC SAYS:", EditorStyles.boldLabel);
@@ -169,46 +183,26 @@ public class Node
 
                     //Handling Player Dialogue Option Editing
                     Rect playerTitleRect = new Rect(rect.x + 10, rect.y + 60, rect.width - 20, 20);
-                    GUI.Label(playerTitleRect, "PLAYER RESPONCES:", EditorStyles.boldLabel);
+                    GUI.Label(playerTitleRect, "PLAYER RESPONSES:", EditorStyles.boldLabel);
                     
                     Rect responceIncreaseRect = new Rect(rect.x + rect.width - 75, rect.y + 60, 30, 20);
                     if (GUI.Button(responceIncreaseRect, "+"))
                     {
-                        playerResponcesAmount++;
-                        if (playerResponcesAmount > 4)
-                        {
-                            playerResponcesAmount = 4;
-                        }
-                        else
-                        {
-                            playerResponcesText.Add("");
-                        }
-
-                        rect.height = 90 + (40 * playerResponcesAmount);
+                        AddDialogueOption();
                     }
                     Rect optionDecreaseRect = new Rect(rect.x + rect.width - 40, rect.y + 60, 30, 20);
                     if (GUI.Button(optionDecreaseRect, "-"))
                     {
-                        playerResponcesAmount--;
-                        if (playerResponcesAmount < 1)
-                        {
-                            playerResponcesAmount = 1;
-                        }
-                        else
-                        {
-                            playerResponcesText.RemoveAt(playerResponcesAmount);
-                        }
-
-                        rect.height = 90 + (40 * playerResponcesAmount);
+                        RemoveDialogueOption();
                     }
 
-                    for (int i = 0; i < playerResponcesAmount; i++)
+                    for (int i = 0; i < playerResponsesAmount; i++)
                     {
                         Rect playerOptionTitleRect = new Rect(rect.x + 10, rect.y + 75 + (40 * i), rect.width - 20, 20);
-                        GUI.Label(playerOptionTitleRect, "Player Responce " + (i + 1) + ":");
+                        GUI.Label(playerOptionTitleRect, "Player Response " + (i + 1) + ":");
 
                         Rect playerOptionInputRect = new Rect(rect.x + 10, rect.y + 90 + (40 * i), rect.width - 20, 20);
-                        npcText = GUI.TextField(playerOptionInputRect, playerResponcesText[i]);
+                        playerResponsesText[i] = GUI.TextField(playerOptionInputRect, playerResponsesText[i]);
                     }
                 }
                 break;
@@ -287,6 +281,38 @@ public class Node
         {
             OnRemoveNode(this);
         }
+    }
+
+    private void AddDialogueOption()
+    {
+        playerResponsesAmount++;
+        if (playerResponsesAmount > 4)
+        {
+            playerResponsesAmount = 4;
+        }
+        else
+        {
+            playerResponsesText.Add("");
+            outPoints.Add(new ConnectionPoint(this, ConnectionPointType.OUT, OnClickOut));
+        }
+
+        rect.height = 90 + (40 * playerResponsesAmount);
+    }
+
+    private void RemoveDialogueOption()
+    {
+        playerResponsesAmount--;
+        if (playerResponsesAmount < 1)
+        {
+            playerResponsesAmount = 1;
+        }
+        else
+        {
+            playerResponsesText.RemoveAt(playerResponsesAmount);
+            outPoints.RemoveAt(playerResponsesAmount);
+        }
+
+        rect.height = 90 + (40 * playerResponsesAmount);
     }
 }
 
