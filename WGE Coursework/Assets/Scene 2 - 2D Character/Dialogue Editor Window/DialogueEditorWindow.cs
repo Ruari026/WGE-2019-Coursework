@@ -22,7 +22,7 @@ public class DialogueEditorWindow : EditorWindow
     NodeBasedPanel nodeBasedPanel;
     Rect dialoguePanel;
 
-    [MenuItem("CustomWindows/Dialogue Editor")]
+    [MenuItem("Windows-Custom/Dialogue Editor")]
     static void Init()
     {
         theWindow = (DialogueEditorWindow)EditorWindow.GetWindow(typeof(DialogueEditorWindow));
@@ -47,12 +47,12 @@ public class DialogueEditorWindow : EditorWindow
         //Handling Saving & Loading Panel
         DrawSaveLoadPanel();
 
+        //Drawing The Lower Panel
+        DrawDialogueEditorPanel();
+
         //Handling Resizer Panel
         DrawResizingHandle();
         HandleResizingInputs();
-
-        //Drawing The Lower Panel
-        DrawDialogueEditorPanel();
 
         if (GUI.changed)
         {

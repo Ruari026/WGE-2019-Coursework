@@ -39,7 +39,7 @@ public class SaveLoadPanel
 
         if (GUILayout.Button("New Dialogue File"))
         {
-
+            theNodeBasedPanel.CreateNewDialogue();
         }
 
         if (GUILayout.Button("Open Dialogue File"))

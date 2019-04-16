@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PauseScreenScript : MonoBehaviour
 {
+    //Required Information For The Scene
     public InputField fileName;
     public VoxelChunk theChunk;
 
@@ -44,4 +46,17 @@ public class PauseScreenScript : MonoBehaviour
     {
 
     }
+
+
+    /*
+    ======================================================================================================================================================
+    Other
+    ======================================================================================================================================================
+    */
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene("Scene 0");
+
+    }
+
 }

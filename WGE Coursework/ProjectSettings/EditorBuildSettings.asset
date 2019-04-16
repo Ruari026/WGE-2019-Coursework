@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
+    path: Assets/Scene 0 - Main Menu/Scene 0.unity
+    guid: 46088dad9b3ae424dbb7473ef453332b
+  - enabled: 1
+    path: Assets/Scene 1 - Minecraft/Scene 1.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scene 2 - 2D Character/Scene 2.unity
+    guid: 4b10a4656d0721d419f82afd671953e7
   m_configObjects: {}
