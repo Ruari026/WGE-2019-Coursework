@@ -10,7 +10,6 @@ public class VoxelChunk : MonoBehaviour
     public delegate void EventBlockChangedWithTypeAndPosition(int blockType, Vector3 blockPosition);
 
     // event instances for EventBlockChangedWithType
-    public static event EventBlockChangedWithType OnEventBlockPlaced;
     public static event EventBlockChangedWithType OnEventBlockChanged;
     // event instances for EventBlockChangedWithPosition
     public static event EventBlockChangedWithTypeAndPosition OnEventBlockDestroyed;

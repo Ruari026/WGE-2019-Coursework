@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dialogue>
+  <Response>
+    <ID>NPCfd79d5ac09b10014dbec176067b4dc33</ID>
+    <Content>Hey</Content>
+    <Connections>
+      <Connection>Player336c412e3e40ee243a66996c8ccd11a2</Connection>
+      <Connection>Playerc6619913f7ed809488430b7aa0a52b5c</Connection>
+    </Connections>
+  </Response>
+  <Response>
+    <ID>Player336c412e3e40ee243a66996c8ccd11a2</ID>
+    <Content>Are You Ok</Content>
+    <Connections>
+      <Connection>NPC40ec50d0a8b35e746a936fd2987333ca</Connection>
+    </Connections>
+  </Response>
+  <Response>
+    <ID>Playerc6619913f7ed809488430b7aa0a52b5c</ID>
+    <Content>How Are You</Content>
+    <Connections>
+      <Connection>NPC0705f50890a98e349960df9910fc690a</Connection>
+    </Connections>
+  </Response>
+  <Response>
+    <ID>NPC40ec50d0a8b35e746a936fd2987333ca</ID>
+    <Content>Ok</Content>
+    <Connections>
+      <Connection>Playerb8b8788c9be6ca74e8b7f8e3e976f4d9</Connection>
+    </Connections>
+  </Response>
+  <Response>
+    <ID>Playerb8b8788c9be6ca74e8b7f8e3e976f4d9</ID>
+    <Content>...</Content>
+    <Connections>
+      <Connection />
+    </Connections>
+  </Response>
+  <Response>
+    <ID>NPC0705f50890a98e349960df9910fc690a</ID>
+    <Content>Bye</Content>
+    <Connections>
+      <Connection>Player4d1fdf53286b9484aa79a1233f630c65</Connection>
+    </Connections>
+  </Response>
+  <Response>
+    <ID>Player4d1fdf53286b9484aa79a1233f630c65</ID>
+    <Content>...</Content>
+    <Connections>
+      <Connection />
+    </Connections>
+  </Response>
+</Dialogue>

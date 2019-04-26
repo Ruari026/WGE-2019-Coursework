@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class Node
 {
     //Node Information
-    private NodeType nodeType;
+    public NodeType nodeType;
     public Rect rect;
     public string title;
     public bool isDragged;
@@ -23,9 +23,9 @@ public class Node
     public Action<Node> OnRemoveNode;
 
     //Dialogue Information
-    private string npcText = "";
+    public ResponseStruct npcResponse = new ResponseStruct();
     private int playerResponsesAmount = 1;
-    private List<string> playerResponsesText = new List<string>();
+    public List<ResponseStruct> playerResponses = new List<ResponseStruct>();
 
     /*
     ====================================================================================================
@@ -42,6 +42,7 @@ public class Node
                     //Setting Up Node
                     rect = new Rect(position.x, position.y, 200, 50);
                     outPoints.Add(new ConnectionPoint(this, ConnectionPointType.OUT, OnClickOutPoint));
+                    npcResponse.responceID = GUID.Generate().ToString();
 
                     //Setting Node Styles
                     defaultNodeStyle = new GUIStyle();
@@ -59,6 +60,7 @@ public class Node
                     //Setting Up Node
                     rect = new Rect(position.x, position.y, 200, 50);
                     inPoint = new ConnectionPoint(this, ConnectionPointType.IN, OnClickInPoint);
+                    npcResponse.responceID = "";
 
                     //Setting Node Styles
                     defaultNodeStyle = new GUIStyle();
@@ -77,7 +79,9 @@ public class Node
                     rect = new Rect(position.x, position.y, 225, 125);
                     inPoint = new ConnectionPoint(this, ConnectionPointType.IN, OnClickInPoint);
                     outPoints.Add(new ConnectionPoint(this, ConnectionPointType.OUT, OnClickOutPoint));
-                    playerResponsesText.Add("");
+                    playerResponses.Add(new ResponseStruct());
+                    npcResponse.responceID = GUID.Generate().ToString();
+                    playerResponses[0].responceID = GUID.Generate().ToString();
 
                     //Setting Node Styles
                     defaultNodeStyle = new GUIStyle();
@@ -176,7 +180,7 @@ public class Node
                     GUI.Label(npcTitleRect, "NPC SAYS:", EditorStyles.boldLabel);
 
                     Rect npcTextInputRect = new Rect(rect.x + 10, rect.y + 25, rect.width - 20, 20);
-                    npcText = GUI.TextField(npcTextInputRect, npcText);
+                    npcResponse.responseContent = GUI.TextField(npcTextInputRect, npcResponse.responseContent);
 
                     Rect split = new Rect(rect.x + 10, rect.y + 52, rect.width - 20, 2);
                     Handles.DrawLine(new Vector3(split.x, split.y, 0), new Vector3(split.x + split.width, split.y, 0));
@@ -202,7 +206,7 @@ public class Node
                         GUI.Label(playerOptionTitleRect, "Player Response " + (i + 1) + ":");
 
                         Rect playerOptionInputRect = new Rect(rect.x + 10, rect.y + 90 + (40 * i), rect.width - 20, 20);
-                        playerResponsesText[i] = GUI.TextField(playerOptionInputRect, playerResponsesText[i]);
+                        playerResponses[i].responseContent = GUI.TextField(playerOptionInputRect, playerResponses[i].responseContent);
                     }
                 }
                 break;
@@ -292,7 +296,9 @@ public class Node
         }
         else
         {
-            playerResponsesText.Add("");
+            playerResponses.Add(new ResponseStruct());
+            playerResponses[playerResponsesAmount - 1].responceID = GUID.Generate().ToString();
+
             outPoints.Add(new ConnectionPoint(this, ConnectionPointType.OUT, OnClickOut));
         }
 
@@ -308,7 +314,7 @@ public class Node
         }
         else
         {
-            playerResponsesText.RemoveAt(playerResponsesAmount);
+            playerResponses.RemoveAt(playerResponsesAmount);
             outPoints.RemoveAt(playerResponsesAmount);
         }
 

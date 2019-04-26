@@ -12,8 +12,8 @@ public class NodeBasedPanel
     //Node Information
     private Node startNode;
     private Node endNode;
-    private List<Node> fileNodes;
-    private List<Connection> fileConnections;
+    public List<Node> fileNodes;
+    public List<Connection> fileConnections;
 
     private GUIStyle nodeStyle;
     private GUIStyle selectedNodeStyle;
@@ -22,6 +22,12 @@ public class NodeBasedPanel
 
     private ConnectionPoint selectedInPoint;
     private ConnectionPoint selectedOutPoint;
+
+
+    public NodeBasedPanel()
+    {
+        CreateNewDialogue();
+    }
 
     /*
     ====================================================================================================
@@ -40,6 +46,7 @@ public class NodeBasedPanel
 
         startNode = new Node(NodeType.START, new Vector2(50, 50), OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
         fileNodes.Add(startNode);
+
         endNode = new Node(NodeType.END, new Vector2(50, 250), OnClickInPoint, OnClickOutPoint, OnClickRemoveNode);
         fileNodes.Add(endNode);
 
@@ -214,7 +221,7 @@ public class NodeBasedPanel
     Passable Panel Element Actions
     ====================================================================================================
     */
-    private void OnClickInPoint(ConnectionPoint inPoint)
+    public void OnClickInPoint(ConnectionPoint inPoint)
     {
         selectedInPoint = inPoint;
 
@@ -232,7 +239,7 @@ public class NodeBasedPanel
         }
     }
 
-    private void OnClickOutPoint(ConnectionPoint outPoint)
+    public void OnClickOutPoint(ConnectionPoint outPoint)
     {
         selectedOutPoint = outPoint;
 
@@ -248,9 +255,19 @@ public class NodeBasedPanel
                 ClearConnectionSelection();
             }
         }
+        else
+        {
+            foreach (Connection c in fileConnections)
+            {
+                if (c.outPoint == selectedOutPoint && c.inPoint != null)
+                {
+                    fileConnections.Remove(c);
+                }
+            }
+        }
     }
 
-    private void OnClickRemoveNode(Node node)
+    public void OnClickRemoveNode(Node node)
     {
         if (fileConnections != null)
         {
@@ -275,12 +292,12 @@ public class NodeBasedPanel
         fileNodes.Remove(node);
     }
 
-    private void OnClickRemoveConnection(Connection connection)
+    public void OnClickRemoveConnection(Connection connection)
     {
         fileConnections.Remove(connection);
     }
 
-    private void CreateConnection()
+    public void CreateConnection()
     {
         if (fileConnections == null)
         {
@@ -294,5 +311,21 @@ public class NodeBasedPanel
     {
         selectedInPoint = null;
         selectedOutPoint = null;
+    }
+
+
+    /*
+    ====================================================================================================
+    Sharing Panel Information
+    ====================================================================================================
+    */
+    public List<Node> GetPanelNodes()
+    {
+        return this.fileNodes;
+    }
+
+    public List<Connection> GetPanelConnections()
+    {
+        return this.fileConnections;
     }
 }

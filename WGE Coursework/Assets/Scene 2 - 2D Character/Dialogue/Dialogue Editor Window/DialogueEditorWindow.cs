@@ -14,7 +14,7 @@ public class DialogueEditorWindow : EditorWindow
 
     //Resizing window panels
     Rect windowResizer;
-    private bool isResizing;
+    private bool isResizing = false;
     private float panelRatio = 0.3f;
     private GUIStyle resizerStyle;
 
@@ -52,7 +52,7 @@ public class DialogueEditorWindow : EditorWindow
 
         //Handling Resizer Panel
         DrawResizingHandle();
-        HandleResizingInputs();
+        HandleResizingInputs(Event.current);
 
         if (GUI.changed)
         {
@@ -86,11 +86,10 @@ public class DialogueEditorWindow : EditorWindow
 
         //Drawing the panel split line
         GUILayout.BeginArea(windowResizer, resizerStyle);
-
         GUILayout.EndArea();
     }
 
-    private void HandleResizingInputs()
+    private void HandleResizingInputs(Event e)
     {
         //Setting input area size
         Rect inputArea = windowResizer;
@@ -99,6 +98,35 @@ public class DialogueEditorWindow : EditorWindow
 
         //Setting the cursor when hovered over area
         EditorGUIUtility.AddCursorRect(inputArea, MouseCursor.ResizeHorizontal);
+
+        //Checking if user is clicking on/ off the resizing handle
+        switch (e.type)
+        {
+            case (EventType.MouseDown):
+                {
+                    if (e.button == 0 && windowResizer.Contains(e.mousePosition))
+                    {
+                        isResizing = true;
+                    }
+                }
+                break;
+
+            case (EventType.MouseUp):
+                {
+                    isResizing = false;
+                }
+                break;
+        }
+        ResizePanels(e);
+    }
+
+    private void ResizePanels(Event e)
+    {
+        if (isResizing)
+        {
+            panelRatio = e.mousePosition.x / position.width;
+            Repaint();
+        }
     }
 
 

@@ -27,11 +27,6 @@ public class PlayerMovement2D : MonoBehaviour
     Coroutine _dashReloadHandle = null;
 
 
-    //Personal Addition
-    public delegate void PlayerHitGround();
-    public event PlayerHitGround _playerHitGround;
-
-
     // Use this for initialization
     void Start ()
     {

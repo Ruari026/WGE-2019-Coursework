@@ -1,0 +1,26 @@
+<Dialogue>
+	<NPC>
+    <Response>
+			<ID>1</ID>
+			<Content>Hey, How's it going?</Content>
+			<Connections>1,2,3</Connections>
+		</Response>
+	</NPC>
+	<Player>
+    <Response>
+			<ID>1</ID>
+			<Content>I'm doing okay.</Content>
+			<Connections></Connections>
+		</Response>
+    <Response>
+			<ID>2</ID>
+			<Content>I'm doing terribly</Content>
+			<Connections></Connections>
+		</Response>
+    <Response>
+			<ID>3</ID>
+			<Content>I'm doing great!</Content>
+			<Connections></Connections>
+		</Response>
+	</Player>
+</Dialogue>

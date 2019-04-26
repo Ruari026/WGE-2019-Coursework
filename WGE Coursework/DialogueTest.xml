@@ -1,0 +1,83 @@
+<Dialogue>
+  <Response>
+    <ID>NPC1</ID>
+    <Content>Hey, How's it going?</Content>
+    <Connections>
+      <Connection>Player1</Connection>
+      <Connection>Player2</Connection>
+      <Connection>Player3</Connection>
+    </Connections>
+  </Response>
+  
+  <Response>
+    <ID>NPC2</ID>
+    <Content>That's Good To Hear.</Content>
+    <Connections>
+      <Connection>Player5</Connection>
+    </Connections>
+  </Response>
+
+  <Response>
+    <ID>NPC3</ID>
+    <Content>Aww, That's A Shame.</Content>
+    <Connections>
+      <Connection>Player5</Connection>
+    </Connections>
+  </Response>
+
+  <Response>
+    <ID>NPC4</ID>
+    <Content>No Need To Brag About It.</Content>
+    <Connections>
+      <Connection>Player4</Connection>
+      <Connection>Player5</Connection>
+    </Connections>
+  </Response>
+
+  <Response>
+    <ID>NPC5</ID>
+    <Content>Sorry, I'm Not In A Great Mood Today.</Content>
+    <Connections>
+      <Connection>Player5</Connection>
+    </Connections>
+  </Response>
+  
+  <Response>
+    <ID>Player1</ID>
+    <Content>I'm doing okay.</Content>
+    <Connections>
+      <Connection>NPC2</Connection>
+    </Connections>
+  </Response>
+  
+  <Response>
+    <ID>Player2</ID>
+    <Content>I'm doing terribly</Content>
+    <Connections>
+      <Connection>NPC3</Connection>
+    </Connections>
+  </Response>
+  
+  <Response>
+    <ID>Player3</ID>
+    <Content>I'm doing great!</Content>
+    <Connections>
+      <Connection>NPC4</Connection>
+    </Connections>
+  </Response>
+
+  <Response>
+    <ID>Player4</ID>
+    <Content>Then Why Did You Ask?</Content>
+    <Connections>
+      <Connection>NPC5</Connection>
+    </Connections>
+  </Response>
+
+  <Response>
+    <ID>Player5</ID>
+    <Content>Bye.</Content>
+    <Connections>
+    </Connections>
+  </Response>
+</Dialogue>
